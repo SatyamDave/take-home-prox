@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y curl && \
 
 WORKDIR /app
 
-# Build frontend first
-COPY frontend/package*.json ./frontend/
+# Copy full frontend source and build
+COPY frontend/ ./frontend/
 RUN cd frontend && npm install && npm run build
 
 # Install Python deps
@@ -18,9 +18,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend code
 COPY backend/ ./backend/
-
-# Copy built frontend
-COPY frontend/dist/ ./frontend/dist/
 
 ENV PORT=7860
 EXPOSE 7860
