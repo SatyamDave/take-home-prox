@@ -29,10 +29,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve built frontend statically (for single-service deploy on Railway)
+# Serve built frontend statically (for single-service deploy on Railway/Koyeb)
 FRONTEND_DIST = Path(__file__).parent.parent / "frontend" / "dist"
 if FRONTEND_DIST.exists():
     app.mount("/app", StaticFiles(directory=str(FRONTEND_DIST), html=True), name="frontend")
+
+    @app.get("/")
+    async def serve_frontend():
+        return FileResponse(str(FRONTEND_DIST / "index.html"))
 
 # Global agent instance
 agent: Optional[VulcanAgent] = None
