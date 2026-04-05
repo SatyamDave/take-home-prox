@@ -7,8 +7,8 @@
 ## Quick Start (2 minutes)
 
 ```bash
-git clone https://github.com/SatyamDave/take-home-prox.git
-cd take-home-prox/prox-challenge
+git clone https://github.com/SatyamDave/prox-challenge.git
+cd prox-challenge
 
 # Set your API key
 cp .env.example .env
@@ -21,7 +21,7 @@ cp .env.example .env
 
 Then open **http://localhost:5173**
 
-Or run the hosted version at: **https://huggingface.co/spaces/SatyamDave/vulcan-agent**
+Or try the hosted version: **https://huggingface.co/spaces/SatyamDave/vulcan-agent**
 
 ---
 
