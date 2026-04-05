@@ -76,17 +76,7 @@ class AdvancedVulcanAgent:
         self.constraint_engine = ConstraintEngine(self.domain_knowledge)
         self.simulation_engine = SimulationEngine()
 
-        # Primary: OpenRouter (Anthropic Claude via OpenRouter API)
-        openrouter_key = os.getenv("OPENROUTER_API_KEY")
-        self.openrouter_client = None
-        self.model = "anthropic/claude-sonnet-4"
-        if openrouter_key:
-            try:
-                self.openrouter_client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=openrouter_key)
-            except Exception:
-                pass
-
-        # Fallback: Anthropic SDK (if reviewer provides ANTHROPIC_API_KEY instead)
+        # Primary: Anthropic SDK (direct Claude access)
         anthropic_key = os.getenv("ANTHROPIC_API_KEY")
         self.anthropic_client = None
         self.claude_model = "claude-sonnet-4-20250514"
@@ -96,8 +86,18 @@ class AdvancedVulcanAgent:
             except Exception:
                 pass
 
+        # Fallback: OpenRouter (if reviewer provides OPENROUTER_API_KEY instead)
+        openrouter_key = os.getenv("OPENROUTER_API_KEY")
+        self.openrouter_client = None
+        self.model = "anthropic/claude-sonnet-4"
+        if openrouter_key:
+            try:
+                self.openrouter_client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=openrouter_key)
+            except Exception:
+                pass
+
         # If neither is available, all LLM calls fall back to regex
-        self.llm_available = self.openrouter_client is not None or self.anthropic_client is not None
+        self.llm_available = self.anthropic_client is not None or self.openrouter_client is not None
 
     # ──────────────────────────────────────────────────────────────
     #  Main entry point
